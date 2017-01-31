@@ -53,6 +53,7 @@ const S_START			= makeState();
 const S_NUM				= makeState(NUM);
 const S_DOMAIN			= makeState(DOMAIN);
 const S_DOMAIN_HYPHEN	= makeState(); // domain followed by 1 or more hyphen characters
+const S_DOMAIN_UNDERSCORE	= makeState(); // domain followed by 1 or more underscore characters
 const S_WS				= makeState(WS);
 
 // States for special URL symbols
@@ -138,22 +139,32 @@ domainStates.push.apply(domainStates, partialLocalhostStates);
 S_START.on(NUMBERS, S_NUM);
 S_NUM
 .on('-', S_DOMAIN_HYPHEN)
+.on('_', S_DOMAIN_UNDERSCORE)
 .on(NUMBERS, S_NUM)
 .on(ALPHANUM, S_DOMAIN); // number becomes DOMAIN
 
 S_DOMAIN
 .on('-', S_DOMAIN_HYPHEN)
+.on('_', S_DOMAIN_UNDERSCORE)
 .on(ALPHANUM, S_DOMAIN);
 
 // All the generated states should have a jump to DOMAIN
 for (let i = 0; i < domainStates.length; i++) {
 	domainStates[i]
 	.on('-', S_DOMAIN_HYPHEN)
+	.on('_', S_DOMAIN_UNDERSCORE)
 	.on(ALPHANUM, S_DOMAIN);
 }
 
 S_DOMAIN_HYPHEN
 .on('-', S_DOMAIN_HYPHEN)
+.on('_', S_DOMAIN_UNDERSCORE)
+.on(NUMBERS, S_DOMAIN)
+.on(ALPHANUM, S_DOMAIN);
+
+S_DOMAIN_UNDERSCORE
+.on('-', S_DOMAIN_HYPHEN)
+.on('_', S_DOMAIN_UNDERSCORE)
 .on(NUMBERS, S_DOMAIN)
 .on(ALPHANUM, S_DOMAIN);
 

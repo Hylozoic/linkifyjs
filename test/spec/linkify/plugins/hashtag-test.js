@@ -16,15 +16,15 @@ describe('linkify/plugins/hashtag', () => {
 		});
 
 		it ('can parse hashtags after applying the plugin', () => {
-			expect(linkify.find('There is a #hashtag #YOLO-2015 and #1234 and #%^&*( should not work'))
+			expect(linkify.find('There is a #hashtag #YOLO-20_15 and #1234 and #%^&*( should not work'))
 			.to.be.eql([{
 				type: 'hashtag',
 				value: '#hashtag',
 				href: '#hashtag'
 			}, {
 				type: 'hashtag',
-				value: '#YOLO-2015',
-				href: '#YOLO-2015'
+				value: '#YOLO-20_15',
+				href: '#YOLO-20_15'
 			}]);
 
 			expect(linkify.test('#wat', 'hashtag')).to.be.ok;
